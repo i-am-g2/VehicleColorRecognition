@@ -1,9 +1,11 @@
 
-from torchvision.transforms  import ToTensor, Resize, CenterCrop , Compose
-import torch.nn as nn
 import torch
-from Model import VehicleColorModel
+import torch.nn as nn
 from PIL import Image
+from torchvision.transforms import CenterCrop, Compose, Resize, ToTensor
+
+from config import MODEL_PATH
+from Model import VehicleColorModel
 
 # Setting Up the Labels 
 labels = ['black', 'blue' , 'cyan' , 'gray' , 'green' , 'red' , 'white' , 'yellow']
@@ -15,8 +17,6 @@ def encode_label_from_path(path):
         if value in path:
             return  index
 
-# print(torch.cuda.is_available())
-MODEL_PATH = '/home/jeetu/Project/VehicleColorA/Exp1/model_3.pt'
 model = VehicleColorModel()
 model.load_state_dict(torch.load(MODEL_PATH , map_location=torch.device("cpu")))
 transforms = Compose([Resize(224), CenterCrop(224), ToTensor()])
@@ -30,5 +30,5 @@ def infer(image):
 	
 
 if __name__ == "__main__":
-	image = Image.open('/home/jeetu/Desktop/AA.jpg').convert('RGB')
+	image = Image.open('/path/to/an/image').convert('RGB')
 	print(infer(image))

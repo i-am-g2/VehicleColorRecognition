@@ -1,8 +1,10 @@
 import argparse
 import io
+
+from flask import Flask, jsonify, request
 from PIL import Image
-from infer import infer 
-from flask import Flask, jsonify
+
+from infer import infer
 
 app = Flask(__name__)
 
@@ -11,6 +13,7 @@ def image_handler():
 	bio = io.BytesIO()
 	request.files['image'].save(bio)
 	image = Image.open(bio)
+	# img = np.frombuffer(bio.getvalue(), dtype='uint8')	
 	result = infer(image)
 	return jsonify({'result': result}) 
 
